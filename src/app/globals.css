@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme {
+  /* Paleta extraida da logomarca: traco preto-azulado + gradiente azul */
+  --color-ink: #0a1420;
+
+  --color-navy-950: #081f36;
+  --color-navy-900: #0c2d4d;
+  --color-navy-800: #0f3a63;
+
+  --color-brand-700: #17679f;
+  --color-brand-600: #1f7dbf;
+  --color-brand-500: #2f96d8;
+  --color-brand-400: #56aede;
+  --color-brand-300: #8ac8ea;
+  --color-brand-200: #bfe1f4;
+  --color-brand-100: #ddeffa;
+  --color-brand-50: #f0f8fd;
+
+  --color-mist: #f2f7fb;
+
+  /* Verde WhatsApp: codigo visual unico de conversao na pagina */
+  --color-wa-400: #3ddf7a;
+  --color-wa-500: #25d366;
+  --color-wa-600: #1fc25b;
+  --color-wa-950: #04301a;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-200);
+    color: var(--color-navy-950);
+  }
+}
+
+/*
+ * Animacao de entrada por scroll (progressive enhancement):
+ * - sem JS, tudo fica visivel (a classe .js nunca e adicionada);
+ * - com prefers-reduced-motion, nada se move.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .js [data-reveal].is-inview {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Pulso discreto do botao flutuante de WhatsApp */
+  @keyframes wa-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(37 211 102 / 0.45);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgb(37 211 102 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(37 211 102 / 0);
+    }
+  }
+
+  .wa-pulse {
+    animation: wa-pulse 2.4s ease-out infinite;
+  }
+}
+
+/*
+ * Entrada do hero em CSS puro (nao depende de JS):
+ * o LCP nunca fica atras da hidratacao.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .rise {
+    animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--rise-delay, 0ms);
+  }
+}
+
+/*
+ * Leque de cores do hero.
+ * Cada cartela gira a partir de um pivo comum abaixo do container,
+ * como um leque de amostras de tinta segurado na mao.
+ */
+.fan-chip {
+  transform: translateX(-50%) rotate(var(--rot));
+  transform-origin: 50% 150%;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fan-open {
+    from {
+      transform: translateX(-50%) rotate(0deg);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(-50%) rotate(var(--rot));
+      opacity: 1;
+    }
+  }
+
+  .fan-chip {
+    animation: fan-open 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--fan-delay, 0ms);
+  }
+
+  .fan:hover .fan-chip {
+    transform: translateX(-50%) rotate(calc(var(--rot) * 1.18));
+  }
+}
+
+/* Lightbox da galeria: trava o scroll da pagina enquanto aberto */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog[open] {
+    animation: dialog-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+}
+
+/* Marcador do FAQ (details/summary nativo, zero JS) */
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item[open] .faq-chevron {
+  transform: rotate(180deg);
+}
