@@ -4,6 +4,7 @@ import { WhatsAppCta } from "@/components/WhatsAppCta";
 const navLinks = [
   { href: "#categorias", label: "Categorias" },
   { href: "#produtos", label: "Produtos" },
+  { href: "#cores", label: "Cores" },
   { href: "#diferenciais", label: "Diferenciais" },
   { href: "#duvidas", label: "Dúvidas" },
 ] as const;

@@ -7,6 +7,7 @@ import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { BrandsStrip } from "@/components/BrandsStrip";
 import { WhyUs } from "@/components/WhyUs";
 import { StoreGallery } from "@/components/StoreGallery";
+import { ColorStudio } from "@/components/ColorStudio";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
@@ -56,6 +57,7 @@ export default function Home() {
         <BrandsStrip />
         <WhyUs />
         <StoreGallery />
+        <ColorStudio />
         <HowItWorks />
         <Testimonials />
         <Faq />
