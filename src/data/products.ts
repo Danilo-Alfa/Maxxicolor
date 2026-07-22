@@ -21,19 +21,18 @@ export const products: readonly Product[] = [
     image: "/produtos/coral-rende-muito.jpg",
   },
   {
-    id: "esmalte-maxxicolor",
-    name: "Esmalte Premium Maxxi Color 3,6L",
-    category: "Marca própria",
-    description: "Esmalte base d'água com acabamento profissional, exclusivo da loja.",
-    badge: "Exclusivo",
-    image: "/produtos/esmalte-maxxicolor.jpg",
-  },
-  {
     id: "suvinil-premium",
     name: "Linha Suvinil Premium",
     category: "Imobiliária",
     description: "Fosco Completo, Toque de Seda, Sempre Limpo — na cor que você quiser.",
     image: "/produtos/suvinil-premium.jpg",
+  },
+  {
+    id: "suvinil-cor-protecao",
+    name: "Esmalte Suvinil Cor & Proteção",
+    category: "Esmaltes",
+    description: "Cor e proteção em um só produto, para madeiras e metais.",
+    image: "/produtos/suvinil-cor-protecao.jpg",
   },
   {
     id: "eucatex-peg-pinte",
