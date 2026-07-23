@@ -1,4 +1,4 @@
-import { Clock, Mail, MapPin } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 import { site } from "@/config/site";
 import { waLink } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
@@ -18,7 +18,10 @@ const footerLinks = [
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const fullAddress = `${site.address.street} — ${site.address.district}, ${site.address.city}/${site.address.state}`;
+  const fullAddress = `${site.address.street} — ${site.address.district}, ${site.address.city}/${site.address.state} · CEP ${site.address.zip}`;
+  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    `${site.name} - ${site.address.street}, ${site.address.district}, ${site.address.city}`,
+  )}`;
 
   return (
     <footer className="border-t border-white/10 bg-navy-950 text-brand-100/70">
@@ -95,19 +98,17 @@ export function Footer() {
             </li>
             <li>
               <a
-                href={`mailto:${site.email}`}
-                className="inline-flex items-center gap-2.5 transition-colors hover:text-white"
+                href={mapsLink}
+                target="_blank"
+                rel="noopener"
+                className="inline-flex items-start gap-2.5 transition-colors hover:text-white"
               >
-                <Mail aria-hidden="true" className="size-4 shrink-0 text-brand-400" />
-                {site.email}
+                <MapPin
+                  aria-hidden="true"
+                  className="mt-0.5 size-4 shrink-0 text-brand-400"
+                />
+                {fullAddress}
               </a>
-            </li>
-            <li className="flex items-start gap-2.5">
-              <MapPin
-                aria-hidden="true"
-                className="mt-0.5 size-4 shrink-0 text-brand-400"
-              />
-              {fullAddress}
             </li>
             <li className="flex items-start gap-2.5">
               <Clock

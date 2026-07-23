@@ -20,24 +20,19 @@ export const site = {
     defaultMessage: "Olá! Vim pelo site e gostaria de um orçamento.",
   },
 
-  // TODO: confirmar e-mail de contato
-  email: "contato@maxxicolor.com.br",
-
-  // TODO: preencher endereco real da loja
   address: {
-    street: "Rua Exemplo, 123",
-    district: "Bairro",
+    street: "Rua Ministro Heitor Bastos Tigre, 44",
+    district: "Jardim Monte Kemel",
     city: "São Paulo",
     state: "SP",
-    zip: "00000-000",
+    zip: "05634-060",
   },
 
   // TODO: confirmar horario de funcionamento
   hours: "Seg. a sex. das 8h às 18h · Sáb. das 8h às 13h",
 
   social: {
-    // TODO: confirmar perfis reais (remover os que nao existirem)
-    instagram: "https://instagram.com/maxxicolortintas",
-    facebook: "https://facebook.com/maxxicolortintas",
+    instagram: "https://www.instagram.com/maxxicolor",
+    facebook: "https://www.facebook.com/maxxicolorpisos",
   },
 } as const;
