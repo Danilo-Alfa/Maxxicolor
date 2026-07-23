@@ -52,12 +52,12 @@ export default function Home() {
       <Header />
       <main id="conteudo">
         <Hero />
+        <ColorStudio />
         <Categories />
         <FeaturedProducts />
         <BrandsStrip />
         <WhyUs />
         <StoreGallery />
-        <ColorStudio />
         <HowItWorks />
         <Testimonials />
         <Faq />

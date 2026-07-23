@@ -2,9 +2,9 @@ import { site } from "@/config/site";
 import { WhatsAppCta } from "@/components/WhatsAppCta";
 
 const navLinks = [
+  { href: "#cores", label: "Cores" },
   { href: "#categorias", label: "Categorias" },
   { href: "#produtos", label: "Produtos" },
-  { href: "#cores", label: "Cores" },
   { href: "#diferenciais", label: "Diferenciais" },
   { href: "#duvidas", label: "Dúvidas" },
 ] as const;

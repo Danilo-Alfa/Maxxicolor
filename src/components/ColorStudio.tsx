@@ -43,7 +43,7 @@ export function ColorStudio() {
   return (
     <section
       id="cores"
-      className="relative overflow-hidden bg-navy-950 py-20 text-white sm:py-28"
+      className="relative overflow-hidden border-t border-white/10 bg-navy-950 py-20 text-white sm:py-28"
     >
       {/* Glow ambiente acompanha a cor escolhida */}
       <div

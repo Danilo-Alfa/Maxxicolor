@@ -5,12 +5,12 @@ import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { FacebookIcon, InstagramIcon } from "@/components/SocialIcons";
 
 const footerLinks = [
+  { href: "#cores", label: "Estúdio de cores" },
   { href: "#categorias", label: "Categorias" },
   { href: "#produtos", label: "Produtos" },
   { href: "#marcas", label: "Marcas" },
   { href: "#diferenciais", label: "Diferenciais" },
   { href: "#loja", label: "A loja" },
-  { href: "#cores", label: "Estúdio de cores" },
   { href: "#como-funciona", label: "Como funciona" },
   { href: "#depoimentos", label: "Depoimentos" },
   { href: "#duvidas", label: "Dúvidas frequentes" },
