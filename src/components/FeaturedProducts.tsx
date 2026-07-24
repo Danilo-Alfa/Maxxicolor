@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { PaintBucket } from "lucide-react";
+import { LightboxImage } from "@/components/LightboxImage";
 import { products } from "@/data/products";
 import { waMessageFor } from "@/lib/whatsapp";
 import { Reveal } from "@/components/Reveal";
@@ -27,30 +28,43 @@ export function FeaturedProducts() {
           {products.map((product, i) => (
             <Reveal key={product.id} delay={(i % 3) * 90} className="h-full">
               <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-navy-950/6 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-navy-900/8">
-                {/* Cartela de cor: espaco reservado para a foto real do produto */}
-                <div
-                  className={`relative flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br ${placeholderTones[i % placeholderTones.length]}`}
-                >
-                  {product.image ? (
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover"
-                    />
-                  ) : (
+                {product.image ? (
+                  <LightboxImage
+                    src={product.image}
+                    alt={product.name}
+                    caption={`${product.name} — ${product.category}`}
+                  >
+                    <div className="relative flex h-44 items-center justify-center overflow-hidden">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      />
+                      {product.badge ? (
+                        <span className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-navy-900 shadow-sm">
+                          {product.badge}
+                        </span>
+                      ) : null}
+                    </div>
+                  </LightboxImage>
+                ) : (
+                  /* Cartela de cor: espaco reservado para a foto real do produto */
+                  <div
+                    className={`relative flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br ${placeholderTones[i % placeholderTones.length]}`}
+                  >
                     <PaintBucket
                       aria-hidden="true"
                       className="size-14 text-white/25 transition-transform duration-300 group-hover:scale-110"
                     />
-                  )}
-                  {product.badge ? (
-                    <span className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-navy-900 shadow-sm">
-                      {product.badge}
-                    </span>
-                  ) : null}
-                </div>
+                    {product.badge ? (
+                      <span className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-navy-900 shadow-sm">
+                        {product.badge}
+                      </span>
+                    ) : null}
+                  </div>
+                )}
 
                 <div className="flex flex-1 flex-col gap-3 p-5">
                   <div className="flex flex-col gap-1">
