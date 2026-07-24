@@ -16,6 +16,7 @@
   ExpiresByType image/webp "access plus 1 month"
   ExpiresByType image/jpeg "access plus 1 month"
   ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/json "access plus 1 day"
 </IfModule>
 
 <IfModule mod_headers.c>

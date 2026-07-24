@@ -1,24 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Wheel from "@uiw/react-color-wheel";
 import ShadeSlider from "@uiw/react-color-shade-slider";
 import { hexToHsva, hsvaToHex, type HsvaColor } from "@uiw/color-convert";
-import { nameColor } from "@/lib/color-name";
+import {
+  hexToLab,
+  loadSelfColorCatalog,
+  nearestSelfColor,
+  type SelfColorEntry,
+} from "@/lib/selfcolor";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { WhatsAppCta } from "@/components/WhatsAppCta";
 
-/** Tons de partida: um clique e a roda salta para a cor. */
-const quickPicks: readonly { name: string; hex: string }[] = [
-  { name: "Azul Maxxi", hex: "#1f7dbf" },
-  { name: "Azul Sereno", hex: "#56aede" },
-  { name: "Verde Eucalipto", hex: "#4d8f6e" },
-  { name: "Amarelo Areia", hex: "#e3c26a" },
-  { name: "Terracota", hex: "#c26744" },
-  { name: "Vermelho Cereja", hex: "#a63446" },
-  { name: "Lilás Suave", hex: "#a68cc7" },
-  { name: "Grafite", hex: "#3a4351" },
+/** Tons de partida: cores reais do leque SelfColor (Suvinil). */
+const quickPicks: readonly SelfColorEntry[] = [
+  { name: "Borboleta Azul", code: "D079", hex: "#3d88c4" },
+  { name: "Azul-glacial", code: "E333", hex: "#58afd5" },
+  { name: "Cavalinha", code: "E315", hex: "#559e78" },
+  { name: "Seiva de Cajueiro", code: "E029", hex: "#e4c177" },
+  { name: "Tijolo", code: "R121", hex: "#c16c45" },
+  { name: "Suco de Framboesa", code: "P572", hex: "#a42d46" },
+  { name: "Tulipa Violeta", code: "D087", hex: "#a295bf" },
+  { name: "Marinheiro", code: "R397", hex: "#3d434e" },
 ];
 
 const HEX_PATTERN = /^#?([0-9a-f]{6})$/i;
@@ -26,17 +31,42 @@ const HEX_PATTERN = /^#?([0-9a-f]{6})$/i;
 export function ColorStudio() {
   const [hsva, setHsva] = useState<HsvaColor>({ h: 205, s: 84, v: 75, a: 1 });
   const [hexDraft, setHexDraft] = useState<string | null>(null);
+  const [catalog, setCatalog] = useState<readonly SelfColorEntry[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    loadSelfColorCatalog()
+      .then((colors) => {
+        if (active) setCatalog(colors);
+      })
+      .catch(() => {
+        // Sem catalogo, o estudio segue funcional enviando o hex escolhido
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const labs = useMemo(
+    () => catalog.map((entry) => hexToLab(entry.hex)),
+    [catalog],
+  );
 
   const hex = hsvaToHex(hsva);
-  const { name, code } = nameColor(hsva);
+  const match = useMemo(
+    () => nearestSelfColor(hex, catalog, labs),
+    [hex, catalog, labs],
+  );
 
-  const waMessage =
-    `Olá! Escolhi uma cor no seletor do site e gostaria de um orçamento. ` +
-    `Cor: ${name} (código ${code}, hex ${hex.toUpperCase()}).`;
+  const waMessage = match
+    ? `Olá! Escolhi uma cor no site e gostaria de um orçamento. ` +
+      `Cor SelfColor: ${match.name} (código ${match.code}).`
+    : `Olá! Escolhi uma cor no site e gostaria de um orçamento. ` +
+      `Cor: ${hex.toUpperCase()}.`;
 
   function applyHexDraft(value: string) {
-    const match = HEX_PATTERN.exec(value.trim());
-    if (match) setHsva({ ...hexToHsva(`#${match[1]}`), a: 1 });
+    const parsed = HEX_PATTERN.exec(value.trim());
+    if (parsed) setHsva({ ...hexToHsva(`#${parsed[1]}`), a: 1 });
     setHexDraft(null);
   }
 
@@ -45,21 +75,21 @@ export function ColorStudio() {
       id="cores"
       className="relative overflow-hidden border-t border-white/10 bg-navy-950 py-20 text-white sm:py-28"
     >
-      {/* Glow ambiente acompanha a cor escolhida */}
+      {/* Glow ambiente acompanha a cor do leque */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute top-0 left-1/2 h-[30rem] w-[60rem] -translate-x-1/2 opacity-25 blur-3xl transition-colors duration-700"
         style={{
-          background: `radial-gradient(closest-side, ${hex}, transparent)`,
+          background: `radial-gradient(closest-side, ${match?.hex ?? hex}, transparent)`,
         }}
       />
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6">
         <SectionHeading
           dark
-          eyebrow="Estúdio de cores"
+          eyebrow="Estúdio de cores · Sistema SelfColor"
           title="Imaginou a cor? Gire a roda e mande para a gente"
-          subtitle="Escolha o tom, ajuste a intensidade e envie direto para um vendedor — a máquina tintométrica prepara a sua cor na hora."
+          subtitle="A cada tom escolhido, mostramos a cor equivalente no leque SelfColor da Suvinil — a mesma que a máquina tintométrica da loja prepara na hora."
         />
 
         <Reveal>
@@ -70,7 +100,7 @@ export function ColorStudio() {
                 <div
                   aria-hidden="true"
                   className="absolute -inset-6 rounded-full opacity-35 blur-2xl transition-colors duration-500"
-                  style={{ backgroundColor: hex }}
+                  style={{ backgroundColor: match?.hex ?? hex }}
                 />
                 <div className="relative rounded-full border border-white/10 bg-navy-900/60 p-5 shadow-2xl backdrop-blur">
                   <Wheel
@@ -124,19 +154,19 @@ export function ColorStudio() {
               </div>
             </div>
 
-            {/* Cartela ao vivo + envio */}
+            {/* Cartela SelfColor ao vivo + envio */}
             <div className="mx-auto flex w-full max-w-sm flex-col gap-6">
               <div className="flex flex-col gap-3">
                 <p className="text-xs font-semibold tracking-wide text-brand-200 uppercase">
-                  Ou comece por um tom pronto
+                  Ou comece por um tom do leque
                 </p>
                 <div className="flex flex-wrap gap-2.5">
                   {quickPicks.map((pick) => (
                     <button
-                      key={pick.hex}
+                      key={pick.code}
                       type="button"
-                      title={pick.name}
-                      aria-label={`Selecionar cor ${pick.name}`}
+                      title={`${pick.name} · ${pick.code}`}
+                      aria-label={`Selecionar cor ${pick.name}, código ${pick.code}`}
                       onClick={() => setHsva({ ...hexToHsva(pick.hex), a: 1 })}
                       className={`size-9 rounded-full border-2 transition-transform duration-150 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-300 ${
                         hex.toLowerCase() === pick.hex
@@ -153,21 +183,23 @@ export function ColorStudio() {
               <div className="overflow-hidden rounded-2xl bg-white shadow-2xl shadow-navy-950/50">
                 <div
                   className="h-36 transition-colors duration-300 sm:h-44"
-                  style={{ backgroundColor: hex }}
+                  style={{ backgroundColor: match?.hex ?? hex }}
                 />
                 <div className="flex items-end justify-between gap-3 px-5 py-4">
                   <div className="flex flex-col gap-0.5">
                     <span className="font-display text-lg leading-tight font-semibold text-navy-950">
-                      {name}
+                      {match ? match.name : hex.toUpperCase()}
                     </span>
                     <span className="text-xs tracking-wide text-ink/55">
-                      {code} · {hex.toUpperCase()}
+                      {match
+                        ? `Código ${match.code} · ${match.hex.toUpperCase()}`
+                        : "Carregando o leque SelfColor…"}
                     </span>
                   </div>
-                  <span className="text-[10px] leading-snug text-ink/40">
-                    Cartela
+                  <span className="text-right text-[10px] leading-snug text-ink/40">
+                    SelfColor
                     <br />
-                    Maxxi Color
+                    Suvinil
                   </span>
                 </div>
               </div>
@@ -180,8 +212,9 @@ export function ColorStudio() {
               />
 
               <p className="text-center text-xs leading-relaxed text-brand-100/60">
-                As cores da tela são aproximadas. Na loja, confirmamos o tom
-                exato com você antes de preparar a tinta.
+                Mostramos a cor do leque SelfColor mais próxima do tom
+                escolhido. As cores da tela são aproximadas — confirmamos o
+                tom exato na loja antes de preparar a tinta.
               </p>
             </div>
           </div>
