@@ -27,10 +27,12 @@ const quickPicks: readonly SelfColorEntry[] = [
 ];
 
 const HEX_PATTERN = /^#?([0-9a-f]{6})$/i;
+const CODE_PATTERN = /^[a-z]\d{3,4}$/i;
 
 export function ColorStudio() {
   const [hsva, setHsva] = useState<HsvaColor>({ h: 205, s: 84, v: 75, a: 1 });
   const [hexDraft, setHexDraft] = useState<string | null>(null);
+  const [inputError, setInputError] = useState(false);
   const [catalog, setCatalog] = useState<readonly SelfColorEntry[]>([]);
 
   useEffect(() => {
@@ -64,10 +66,37 @@ export function ColorStudio() {
     : `Olá! Escolhi uma cor no site e gostaria de um orçamento. ` +
       `Cor: ${hex.toUpperCase()}.`;
 
-  function applyHexDraft(value: string) {
-    const parsed = HEX_PATTERN.exec(value.trim());
-    if (parsed) setHsva({ ...hexToHsva(`#${parsed[1]}`), a: 1 });
-    setHexDraft(null);
+  /** Aceita hex (#73BF87) ou codigo do leque SelfColor (D627). */
+  function applyColorInput(value: string) {
+    const raw = value.trim();
+    if (raw === "") {
+      setHexDraft(null);
+      setInputError(false);
+      return;
+    }
+
+    const asHex = HEX_PATTERN.exec(raw);
+    if (asHex) {
+      setHsva({ ...hexToHsva(`#${asHex[1]}`), a: 1 });
+      setHexDraft(null);
+      setInputError(false);
+      return;
+    }
+
+    const asCode = CODE_PATTERN.exec(raw.replace(/[\s-]/g, ""));
+    if (asCode) {
+      const found = catalog.find(
+        (entry) => entry.code.toLowerCase() === asCode[0].toLowerCase(),
+      );
+      if (found) {
+        setHsva({ ...hexToHsva(found.hex), a: 1 });
+        setHexDraft(null);
+        setInputError(false);
+        return;
+      }
+    }
+
+    setInputError(true);
   }
 
   return (
@@ -128,29 +157,48 @@ export function ColorStudio() {
                 </div>
               </div>
 
-              <div className="flex w-72 items-center gap-3">
+              <div className="flex w-72 flex-col gap-2">
                 <label
-                  htmlFor="hex"
+                  htmlFor="cor-codigo"
                   className="text-xs font-semibold tracking-wide text-brand-200 uppercase"
                 >
-                  Hex
+                  Hex ou código do leque
                 </label>
                 <input
-                  id="hex"
+                  id="cor-codigo"
                   type="text"
                   inputMode="text"
                   autoComplete="off"
                   spellCheck={false}
+                  placeholder="#73BF87 ou D627"
                   value={hexDraft ?? hex.toUpperCase()}
-                  onChange={(event) => setHexDraft(event.target.value)}
-                  onBlur={(event) => applyHexDraft(event.target.value)}
+                  onChange={(event) => {
+                    setHexDraft(event.target.value);
+                    setInputError(false);
+                  }}
+                  onBlur={(event) => applyColorInput(event.target.value)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter")
-                      applyHexDraft(event.currentTarget.value);
+                      applyColorInput(event.currentTarget.value);
                   }}
-                  className="w-full rounded-full border border-white/15 bg-navy-900/70 px-4 py-2 text-sm font-medium tracking-wider text-white uppercase focus:border-brand-400 focus:outline-none"
-                  aria-label="Código hexadecimal da cor"
+                  aria-invalid={inputError}
+                  className={`w-full rounded-full border bg-navy-900/70 px-4 py-2 text-sm font-medium tracking-wider text-white uppercase focus:outline-none ${
+                    inputError
+                      ? "border-red-400 focus:border-red-400"
+                      : "border-white/15 focus:border-brand-400"
+                  }`}
+                  aria-label="Código hexadecimal ou código SelfColor da cor"
                 />
+                <p
+                  className={`text-xs leading-relaxed ${
+                    inputError ? "text-red-300" : "text-brand-100/50"
+                  }`}
+                  role={inputError ? "alert" : undefined}
+                >
+                  {inputError
+                    ? "Não encontramos essa cor. Use um hex (#73BF87) ou um código do leque, como D627."
+                    : "Aceita os dois: hex (#73BF87) ou código SelfColor (D627)."}
+                </p>
               </div>
             </div>
 
@@ -186,15 +234,24 @@ export function ColorStudio() {
                   style={{ backgroundColor: match?.hex ?? hex }}
                 />
                 <div className="flex items-end justify-between gap-3 px-5 py-4">
-                  <div className="flex flex-col gap-0.5">
+                  <div className="flex flex-col gap-1.5">
                     <span className="font-display text-lg leading-tight font-semibold text-navy-950">
                       {match ? match.name : hex.toUpperCase()}
                     </span>
-                    <span className="text-xs tracking-wide text-ink/55">
-                      {match
-                        ? `Código ${match.code} · ${match.hex.toUpperCase()}`
-                        : "Carregando o leque SelfColor…"}
-                    </span>
+                    {match ? (
+                      <span className="flex flex-wrap items-center gap-1.5">
+                        <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-xs font-bold tracking-wider text-brand-700">
+                          {match.code}
+                        </span>
+                        <span className="rounded-md bg-mist px-1.5 py-0.5 text-xs font-semibold tracking-wider text-navy-900">
+                          {match.hex.toUpperCase()}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="text-xs tracking-wide text-ink/55">
+                        Carregando o leque SelfColor…
+                      </span>
+                    )}
                   </div>
                   <span className="text-right text-[10px] leading-snug text-ink/40">
                     SelfColor
