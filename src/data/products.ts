@@ -28,6 +28,13 @@ export const products: readonly Product[] = [
     image: "/produtos/suvinil-premium.jpg",
   },
   {
+    id: "eucatex-peg-pinte",
+    name: "Eucatex Peg & Pinte 18L",
+    category: "Imobiliária",
+    description: "Tinta acrílica concentrada, anti mofo e sem cheiro.",
+    image: "/produtos/eucatex-peg-pinte.jpg",
+  },
+  {
     id: "suvinil-cor-protecao",
     name: "Esmalte Suvinil Cor & Proteção",
     category: "Esmaltes",
@@ -35,11 +42,19 @@ export const products: readonly Product[] = [
     image: "/produtos/suvinil-cor-protecao.jpg",
   },
   {
-    id: "eucatex-peg-pinte",
-    name: "Eucatex Peg & Pinte 18L",
-    category: "Imobiliária",
-    description: "Tinta acrílica concentrada, anti mofo e sem cheiro.",
-    image: "/produtos/eucatex-peg-pinte.jpg",
+    id: "maza-direto-ferrugem",
+    name: "Maza Direto na Ferrugem 3,6L",
+    category: "Esmaltes",
+    description:
+      "Esmalte sintético premium: aplica direto na ferrugem, sem fundo, com opções metálicas.",
+    image: "/produtos/maza-direto-ferrugem.jpg",
+  },
+  {
+    id: "esmalte-lukscolor",
+    name: "Esmalte Lukscolor Premium Plus",
+    category: "Esmaltes",
+    description: "Proteção e brilho premium para madeiras e metais.",
+    image: "/produtos/esmalte-lukscolor.jpg",
   },
   {
     id: "massa-corrida-coral",
@@ -49,10 +64,10 @@ export const products: readonly Product[] = [
     image: "/produtos/massa-corrida-coral.jpg",
   },
   {
-    id: "esmalte-lukscolor",
-    name: "Esmalte Lukscolor Premium Plus",
-    category: "Esmaltes",
-    description: "Proteção e brilho premium para madeiras e metais.",
-    image: "/produtos/esmalte-lukscolor.jpg",
+    id: "sv-profissional",
+    name: "Tintas SV Linha Profissional",
+    category: "Profissional",
+    description: "Esmaltes e epóxi da linha profissional, feitos para o uso pesado.",
+    image: "/produtos/sv-profissional.jpg",
   },
 ] as const;
