@@ -1,6 +1,9 @@
 # Configuracao para Apache (Hostinger)
 # Este arquivo e copiado automaticamente para a pasta /out no build.
 
+# Pagina de erro 404 personalizada
+ErrorDocument 404 /404.html
+
 # Compressao gzip
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
