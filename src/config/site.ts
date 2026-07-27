@@ -7,7 +7,7 @@ export const site = {
   name: "Maxxi Color",
   legalName: "Maxxi Color Tintas",
   description:
-    "Loja de tintas e materiais para pintura e obra: tintas imobiliárias, automotivas e industriais, fitas, solventes, EPIs, elétrica e acessórios. Orçamento rápido pelo WhatsApp.",
+    "Loja de tintas e materiais para pintura e obra: tintas imobiliárias e industriais, fitas, solventes, EPIs, elétrica e acessórios. Orçamento rápido pelo WhatsApp.",
 
   // TODO: confirmar o dominio definitivo antes de publicar
   url: "https://www.maxxicolor.com.br",

@@ -53,11 +53,11 @@ export default function Home() {
       <main id="conteudo">
         <Hero />
         <ColorStudio />
+        <StoreGallery />
         <Categories />
         <FeaturedProducts />
         <BrandsStrip />
         <WhyUs />
-        <StoreGallery />
         <HowItWorks />
         <Testimonials />
         <Faq />

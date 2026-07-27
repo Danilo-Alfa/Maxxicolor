@@ -3,7 +3,7 @@ export interface Category {
   title: string;
   description: string;
   examples: readonly string[];
-  icon: "house" | "car" | "factory";
+  icon: "house" | "factory";
 }
 
 export const categories: readonly Category[] = [
@@ -14,14 +14,6 @@ export const categories: readonly Category[] = [
       "Tintas para paredes internas, externas e fachadas, com alta cobertura e acabamento profissional.",
     examples: ["Acrílicas", "Esmaltes", "Massas", "Tinta piso"],
     icon: "house",
-  },
-  {
-    id: "automotiva",
-    title: "Linha Automotiva",
-    description:
-      "Repintura automotiva completa: bases, vernizes e acabamentos com a cor exata do seu veículo.",
-    examples: ["Bases PU", "Vernizes", "Primers", "Polimento"],
-    icon: "car",
   },
   {
     id: "industrial",

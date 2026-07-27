@@ -1,6 +1,5 @@
 import {
   ArrowRight,
-  CarFront,
   Disc,
   Droplets,
   Factory,
@@ -20,7 +19,6 @@ import { SectionHeading } from "@/components/SectionHeading";
 
 const categoryIcons: Record<Category["icon"], typeof House> = {
   house: House,
-  car: CarFront,
   factory: Factory,
 };
 
@@ -41,11 +39,11 @@ export function Categories() {
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6">
         <SectionHeading
           eyebrow="O que você encontra aqui"
-          title="Três linhas de tinta e tudo o que a obra pede"
+          title="Duas linhas de tinta e tudo o que a obra pede"
           subtitle="Da parede da sala ao piso da fábrica — com os acessórios, EPIs e complementos para o serviço inteiro em um só lugar."
         />
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid w-full max-w-4xl gap-5 sm:grid-cols-2">
           {categories.map((category, i) => {
             const Icon = categoryIcons[category.icon];
             return (

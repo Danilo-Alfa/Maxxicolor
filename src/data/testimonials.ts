@@ -24,8 +24,8 @@ export const testimonials: readonly Testimonial[] = [
   },
   {
     name: "Léo Martins",
-    role: "Oficina de funilaria e pintura",
+    role: "Síndico de condomínio",
     quote:
-      "A linha automotiva é completa e o preço é justo. Virou meu fornecedor fixo — nunca me deixou na mão com prazo.",
+      "Compramos tudo da manutenção do condomínio com eles: tinta, EPI e material elétrico. Preço justo e nunca me deixaram na mão com prazo.",
   },
 ] as const;

@@ -22,7 +22,7 @@ const instrumentSans = Instrument_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: `${site.legalName} | Tintas Imobiliárias, Automotivas e Industriais`,
+  title: `${site.legalName} | Tintas Imobiliárias e Industriais`,
   description: `${site.description} Peça seu orçamento grátis: ${site.phoneDisplay}.`,
   alternates: { canonical: "/" },
   openGraph: {
