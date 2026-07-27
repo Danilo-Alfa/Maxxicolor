@@ -13,7 +13,7 @@ const fachada: GalleryPhotoData = {
   alt: `Fachada da loja ${site.name}`,
   caption: "Loja física com estoque completo, pronto para retirada",
   width: 720,
-  height: 620,
+  height: 535,
 };
 
 const tintometrica: GalleryPhotoData = {
@@ -46,16 +46,16 @@ export function StoreGallery() {
 
         <Reveal>
           {/*
-            Proporcoes calculadas para as colunas fecharem na mesma altura:
-            esquerda = fachada (7/6) + fitas (16/10); direita = tintometrica
-            em retrato ocupando as duas linhas, sem cortar o equipamento.
+            Fachada em destaque ocupando as duas linhas da esquerda;
+            tintometrica e fitas menores, empilhadas na coluna direita
+            (16/10 cada, somando a mesma altura da fachada).
           */}
-          <div className="grid gap-4 lg:grid-cols-[0.85fr_1fr]">
-            <GalleryFigure photo={fachada} className="aspect-[7/6]" />
+          <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
             <GalleryFigure
-              photo={tintometrica}
-              className="aspect-[3/4] lg:row-span-2 lg:aspect-auto lg:h-full"
+              photo={fachada}
+              className="aspect-[4/3] lg:row-span-2 lg:aspect-auto lg:h-full"
             />
+            <GalleryFigure photo={tintometrica} className="aspect-[16/10]" />
             <GalleryFigure photo={fitas} className="aspect-[16/10]" />
           </div>
         </Reveal>
