@@ -64,6 +64,14 @@ export const products: readonly Product[] = [
     image: "/produtos/massa-corrida-coral.jpg",
   },
   {
+    id: "martins-massa-pva",
+    name: "Massa PVA Martins Complementos 23kg",
+    category: "Preparação",
+    description:
+      "Massa PVA de fácil aplicação e super rendimento, para nivelar paredes internas.",
+    image: "/produtos/martins-complementos.jpg",
+  },
+  {
     id: "sv-profissional",
     name: "Tintas SV Linha Profissional",
     category: "Profissional",
